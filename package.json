@@ -55,6 +55,7 @@
 		"zod": "^3.24.2"
 	},
 	"dependencies": {
+		"@lucide/svelte": "^0.483.0",
 		"@oslojs/crypto": "^1.0.1",
 		"@oslojs/encoding": "^1.1.0",
 		"better-sqlite3": "^11.9.1",

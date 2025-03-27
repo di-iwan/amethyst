@@ -19,12 +19,12 @@
         </a>
     </li>
     <li>
-        <a href="/">
+        <a href="/#about">
             О сайте
         </a>
     </li>
     <li>
-        <a href="/">
+        <a href="/development">
             Разработка
         </a>
     </li>

@@ -1,4 +1,32 @@
-<div class="absolute w-full h-dvh top-0 left-0 -z-50 main-background">
+<script>
+    import { ArrowUpRight, CirclePlay } from 'lucide-svelte';
+    import Button from '$lib/components/ui/button/button.svelte';
+    import Badge from '$lib/components/ui/badge/badge.svelte';
+</script>
+
+<div class="min-h-[calc(100dvh-7rem)] flex items-center justify-center">
+    <div class="max-w-screen-xl w-full mx-auto grid lg:grid-cols-2 gap-12 px-6 py-12">
+        <div>
+            <h1 class="mt-6 max-w-[17ch] text-4xl md:text-5xl lg:text-[2.75rem] xl:text-5xl font-bold !leading-[1.2]">
+                Customized Shadcn UI Blocks & Components
+            </h1>
+            <p class="mt-6 max-w-[60ch] text-lg">
+                Explore a collection of Shadcn UI blocks and components, ready to preview and copy.
+                Streamline your development workflow with easy-to-implement examples.
+            </p>
+            <div class="mt-12 flex items-center gap-4">
+                <Button size="lg" class="rounded-full text-base">
+                    Get Started <ArrowUpRight class="!h-5 !w-5" />
+                </Button>
+                <Button variant="outline" size="lg" class="rounded-full text-base shadow-none">
+                    <CirclePlay class="!h-5 !w-5" /> Watch Demo
+                </Button>
+            </div>
+        </div>
+        <div class="w-full aspect-video bg-accent rounded-xl"></div>
+    </div>
+</div>
+<div class="fixed w-full min-h-dvh top-0 left-0 -z-50 main-background">
     <svg class="absolute w-full h-full">
         <circle cx="25%" cy="80%" r="2" fill="hsl(var(--foreground) / 0.5)"></circle>
         <circle cx="50%" cy="30%" r="1" fill="hsl(var(--foreground) / 0.5)"></circle>
@@ -51,6 +79,6 @@
 
 <style>
     .main-background {
-        background: radial-gradient(circle at 10% 25% , black, grey, hsl(var(--background)) 25%, black 150%);
+        background: radial-gradient(circle at 10% 25% , black, grey, hsl(var(--background)) 15%, black 150%);
     }
 </style>

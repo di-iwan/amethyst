@@ -11,7 +11,7 @@
         <Logo class="h-2/3 dark:fill-white" />
         <NavMenu class="max-md:hidden" />
         <div class="flex items-center gap-3">
-            <Button class="rounded-full">
+            <Button class="rounded-full" href="/register">
                 Вход
             </Button>
             <ThemeSwitch class="rounded-full max-md:hidden" />

@@ -2,6 +2,10 @@
     import { ArrowUpRight, CirclePlay } from 'lucide-svelte';
     import Button from '$lib/components/ui/button/button.svelte';
     import Badge from '$lib/components/ui/badge/badge.svelte';
+    import { Rocket, Sparkle, Sparkles, Star, Github } from "@lucide/svelte"
+        const openGitHub = () => {
+            window.open("https://github.com/di-iwan/amethyst", "_blank", "noopener,noreferrer");
+    };
 </script>
 
 <div class="min-h-[calc(100dvh-7rem)] flex items-center justify-center">
@@ -15,8 +19,8 @@
                 Streamline your development workflow with easy-to-implement examples.
             </p>
             <div class="mt-12 flex items-center gap-4">
-                <Button size="lg" class="rounded-full text-base">
-                    Get Started <ArrowUpRight class="!h-5 !w-5" />
+                <Button on:click={openGitHub} size="lg" class="grid grid-cols-[2rem_auto] items-center gap-4">
+                    Github <Github class="w-full" />
                 </Button>
                 <Button variant="outline" size="lg" class="rounded-full text-base shadow-none">
                     <CirclePlay class="!h-5 !w-5" /> Watch Demo

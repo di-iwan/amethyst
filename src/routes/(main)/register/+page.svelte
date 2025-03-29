@@ -1,59 +1,44 @@
 <script lang="ts">
-    import { goto } from "$app/navigation";
-    let email = "";
-    let password = "";
-    let error = "";
-
-    async function register() {
-        error = "";
-        const response = await fetch("/register", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, password })
-        });
-
-        const result = await response.json();
-        if (!response.ok) {
-            error = result.error || "Ошибка регистрации";
-            return;
-        }
-        goto("/");
-    }
+    import { Button } from "$lib/components/ui/button/index.js";
+    import * as Card from "$lib/components/ui/card/index.js";
+    import { Input } from "$lib/components/ui/input/index.js";
+    import { Label } from "$lib/components/ui/label/index.js";
 </script>
 
-<div class="flex items-center justify-center min-h-screen">
-    <div class="bg-gray-800 p-8 rounded-lg shadow-lg w-96">
-        <div class="flex justify-center mb-4">
-            <div class="bg-gray-700 p-3 rounded-full">
-                <svg class= /></svg>
+<div class="min-h-[calc(100dvh-7rem)] flex items-center justify-center">
+    <Card.Root class="mx-auto max-w-sm">
+        <Card.Header>
+            <Card.Title class="text-2xl">Login</Card.Title>
+            <Card.Description>Enter your email below to login to your account</Card.Description>
+        </Card.Header>
+        <Card.Content>
+            <div class="grid gap-4">
+                <div class="grid gap-2">
+                    <Label for="email">Email</Label>
+                    <Input id="email" type="email" placeholder="m@example.com" required />
+                </div>
+                <div class="grid gap-2">
+                    <div class="flex items-center">
+                        <Label for="password">Password</Label>
+                        <a href="##" class="ml-auto inline-block text-sm underline">
+                            Forgot your password?
+                        </a>
+                    </div>
+                    <Input id="password" type="password" required />
+                </div>
+                    <Button type="submit" class="w-full">Login</Button>
+                    <Button variant="outline" class="w-full">Login with Google</Button>
+                </div>
+                <div class="mt-4 text-center text-sm">
+                Don&apos;t have an account?
+                <a href="##" class="underline">Sign up</a>
             </div>
-        </div>
-        <h2 class="text-white text-xl font-semibold text-center mb-6">Sign up for Shadcn UI Blocks</h2>
-        <button class="w-full bg-white text-gray-900 py-2 rounded flex items-center justify-center mb-4">
-            <img src="https://www.svgrepo.com/show/355037/google.svg" class="w-5 h-5 mr-2" />
-            Continue with Google
-        </button>
-        <div class="flex items-center my-4">
-            <div class="flex-grow border-t border-gray-600"></div>
-            <span class="text-gray-400 mx-2">OR</span>
-            <div class="flex-grow border-t border-gray-600"></div>
-        </div>
-        <form on:submit|preventDefault={register}>
-            <div class="mb-4">
-                <label class="text-gray-400 block mb-1">Email</label>
-                <input type="email" bind:value={email} class="w-full px-3 py-2 bg-gray-700 text-white rounded focus:outline-none" required />
-            </div>
-            <div class="mb-4">
-                <label class="text-gray-400 block mb-1">Password</label>
-                <input type="password" bind:value={password} class="w-full px-3 py-2 bg-gray-700 text-white rounded focus:outline-none" required />
-            </div>
-            {#if error}
-                <p class="text-red-500 text-sm mb-4">{error}</p>
-            {/if}
-            <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded">Continue with Email</button>
-        </form>
-        <p class="text-gray-400 text-center text-sm mt-4">Already have an account? <a href="/login" class="text-blue-400">Log in</a></p>
-    </div>
+        </Card.Content>
+    </Card.Root>
 </div>
 
-  
+<style>
+    :global(body) {
+        @apply bg-muted/45;
+    }
+</style>

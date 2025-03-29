@@ -28,7 +28,7 @@
                 </Button>
             </div>
         </div>
-        <div class="w-full aspect-video bg-accent rounded-xl"><img src="static/photo.png" alt="" class="w-full h-full object-cover rounded-xl"></div>
+        <div class="w-full bg-accent rounded-xl"><img src="/photo.jpg" alt="" class="w-full h-full object-cover rounded-xl"></div>
     </div>
 </div>
 <div class="fixed w-full min-h-dvh top-0 left-0 -z-50 main-background">

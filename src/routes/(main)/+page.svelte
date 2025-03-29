@@ -159,7 +159,7 @@
                     <p class="text-muted-foreground text-[17px]">
                         {feature.details}
                     </p>
-                    <Button class="mt-6 gap-2" href="src/routes/main">
+                    <Button class="mt-6 gap-2" href="/main">
                         Learn More <ArrowRight />
                     </Button>
                 </div>

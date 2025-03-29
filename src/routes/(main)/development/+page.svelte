@@ -12,22 +12,23 @@
     <div class="max-w-screen-xl w-full mx-auto grid lg:grid-cols-2 gap-12 px-6 py-12">
         <div>
             <h1 class="mt-6 max-w-[17ch] text-4xl md:text-5xl lg:text-[2.75rem] xl:text-5xl font-bold !leading-[1.2]">
-                Customized Shadcn UI Blocks & Components
+                Леликов Иван Сергеевич
             </h1>
             <p class="mt-6 max-w-[60ch] text-lg">
-                Explore a collection of Shadcn UI blocks and components, ready to preview and copy.
-                Streamline your development workflow with easy-to-implement examples.
+                Этот проект создан для тех, кто хочет преобразовывать свои мысли в чёткие и структурированные идеи.
+                Здесь каждая задумка, словно металл в кузнице, обретает форму, а хаотичные мысли выстраиваются в созвездия смысла.
+                Сайт предоставляет удобные инструменты для записи, редактирования и организации идей, помогая вам создавать свою собственную вселенную знаний.
+            </p>
+            <p class="mt-6 max-w-[60ch] text-lg">
+                Для данного проекта были использованы следующие framework: SvelteKit, Shadcn-svelte, TypeScript, JavaScript,
             </p>
             <div class="mt-12 flex items-center gap-4">
                 <Button on:click={openGitHub} size="lg" class="grid grid-cols-[2rem_auto] items-center gap-4">
                     Github <Github class="w-full" />
                 </Button>
-                <Button variant="outline" size="lg" class="rounded-full text-base shadow-none">
-                    <CirclePlay class="!h-5 !w-5" /> Watch Demo
-                </Button>
             </div>
         </div>
-        <div class="w-full aspect-video bg-accent rounded-xl"></div>
+        <div class="w-full aspect-video bg-accent rounded-xl"><img src="static/photo.png" alt="" class="w-full h-full object-cover rounded-xl"></div>
     </div>
 </div>
 <div class="fixed w-full min-h-dvh top-0 left-0 -z-50 main-background">

@@ -31,7 +31,7 @@
                 </div>
                 <div class="mt-4 text-center text-sm">
                 Нет аккаунта?
-                <a href="##" class="underline">Зарегистрируйтесь</a>
+                <a href="/login" class="underline">Зарегистрируйтесь</a>
             </div>
         </Card.Content>
     </Card.Root>

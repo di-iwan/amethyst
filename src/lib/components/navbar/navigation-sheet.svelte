@@ -6,8 +6,8 @@
 </script>
 
 <Sheet>
-    <SheetTrigger asChild>
-        <Button variant="outline" size="icon" class="rounded-full">
+    <SheetTrigger asChild let:builder>
+        <Button builders={[builder]} variant="outline" size="icon" class="rounded-full">
             <Menu />
         </Button>
     </SheetTrigger>

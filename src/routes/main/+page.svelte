@@ -1,12 +1,13 @@
 <script lang="ts">
   import { Textarea } from '$lib/components/ui/textarea';
   import { Button } from '$lib/components/ui/button';
-  import { Triangle, SquareUser, Menu } from 'lucide-svelte';
+  import { Triangle, SquareUser, Menu, FilePlus2 } from 'lucide-svelte';
   import ThemeSwitch from '$lib/components/navbar/theme-switch.svelte';
   import * as Sheet from '$lib/components/ui/sheet';
-  import { FilePlus2 } from 'lucide-svelte';
 
   let isSheetOpen = false;
+  let noteTitle = 'Новая заметка';
+  let noteContent = '';
 </script>
 
 <div class="flex h-screen">
@@ -31,7 +32,7 @@
               Пример
             </Button>
             <Button variant="ghost" class="w-full justify-start">
-              Пример №2
+              Пример
             </Button>
           </nav>
         </div>
@@ -58,7 +59,7 @@
           Пример
         </Button>
         <Button variant="ghost" class="w-full justify-start">
-          Пример №2
+          Пример
         </Button>
       </nav>
     </div>
@@ -70,16 +71,34 @@
     </div>
   </aside>
 
-  <main class="ml-0 flex h-full w-full flex-col md:ml-64">
-    <div class="mx-auto p-4 border-b bg-background">
+  <main class="ml-0 flex h-full w-full flex-col md:ml-64 bg-muted text-foreground">
+    <div class="p-4 border-b bg-background text-center text-xl font-semibold tracking-tight">
       NoteForge
     </div>
 
-    <div class="flex-1 p-4">
-      <Textarea
-        class="w-full h-full shadow-lg shadow-foreground/30 border resize-none text-base font-mono bg-background"
-        rows={30}
-      />
+    <div class="flex-1 overflow-auto p-6">
+      <div class="mx-auto max-w-4xl rounded-2xl border bg-background p-6 shadow-md">
+        <input
+          type="text"
+          bind:value={noteTitle}
+          placeholder="Заголовок заметки..."
+          class="mb-4 w-full border-none bg-transparent text-2xl font-bold text-foreground outline-none placeholder:text-muted-foreground"
+        />
+
+        <div class="mb-4 flex gap-2 border-b pb-2 text-muted-foreground">
+          <button class="hover:text-foreground font-bold">B</button>
+          <button class="hover:text-foreground italic">I</button>
+          <button class="hover:text-foreground">H1</button>
+          <button class="hover:text-foreground">•</button>
+        </div>
+
+        <Textarea
+          bind:value={noteContent}
+          class="h-[60vh] w-full resize-none border-none bg-transparent font-mono text-base text-foreground outline-none placeholder:text-muted-foreground"
+          placeholder="Начните писать заметку..."
+          rows={20}
+        />
+      </div>
     </div>
   </main>
 </div>

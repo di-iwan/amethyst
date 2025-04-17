@@ -23,6 +23,9 @@ importers:
       drizzle-orm:
         specifier: ^0.40.1
         version: 0.40.1(@types/better-sqlite3@7.6.12)(better-sqlite3@11.9.1)(gel@2.0.1)
+      marked:
+        specifier: ^15.0.8
+        version: 15.0.8
     devDependencies:
       '@eslint/compat':
         specifier: ^1.2.7
@@ -1702,6 +1705,11 @@ packages:
 
   magic-string@0.30.17:
     resolution: {integrity: sha512-sNPKHvyjVf7gyjwS4xGTaW/mCnF8wnjtifKBEhxfZ7E/S8tQ0rssrwGNn6q8JH/ohItJfSQp9mBtQYuTlH5QnA==}
+
+  marked@15.0.8:
+    resolution: {integrity: sha512-rli4l2LyZqpQuRve5C0rkn6pj3hT8EWPC+zkAxFTAJLxRbENfTAhEQq9itrmf1Y81QtAX5D/MYlGlIomNgj9lA==}
+    engines: {node: '>= 18'}
+    hasBin: true
 
   mdsvex@0.12.3:
     resolution: {integrity: sha512-C/uIJamjNo5PHHnR3JHqsBPoLcfUBpzRmAEB6FLMXI/s7XHOceswjDMKqSPEW2WHmYpKm0taZ3U20GSyhMridA==}
@@ -3799,6 +3807,8 @@ snapshots:
   magic-string@0.30.17:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.0
+
+  marked@15.0.8: {}
 
   mdsvex@0.12.3(svelte@5.23.2):
     dependencies:

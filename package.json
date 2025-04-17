@@ -60,7 +60,8 @@
 		"@oslojs/crypto": "^1.0.1",
 		"@oslojs/encoding": "^1.1.0",
 		"better-sqlite3": "^11.9.1",
-		"drizzle-orm": "^0.40.1"
+		"drizzle-orm": "^0.40.1",
+		"marked": "^15.0.8"
 	},
 	"pnpm": {
 		"onlyBuiltDependencies": [

@@ -26,7 +26,8 @@
 
   function addNote() {
     const newId = Date.now();
-    notes = [...notes, { id: newId, title: `Заметка ${notes.length + 1}`, content: '' }];
+    const newNote = { id: newId, title: `Заметка ${notes.length + 1}`, content: '' };
+    notes = [...notes, newNote];
     activeNoteId = newId;
   }
 
@@ -60,8 +61,15 @@
         </div>
         <div class="flex-1 overflow-auto">
           <nav class="p-4 space-y-2">
-            <Button variant="ghost" class="w-full justify-start">Пример</Button>
-            <Button variant="ghost" class="w-full justify-start">Пример</Button>
+            {#each notes as note}
+              <Button
+                variant={note.id === activeNoteId ? 'secondary' : 'ghost'}
+                class="w-full justify-start"
+                on:click={() => (activeNoteId = note.id)}
+              >
+                {note.title}
+              </Button>
+            {/each}
           </nav>
         </div>
         <div class="border-t p-4">
@@ -81,8 +89,15 @@
     </div>
     <div class="flex-1 overflow-auto">
       <nav class="p-4 space-y-2">
-        <Button variant="ghost" class="w-full justify-start">Пример</Button>
-        <Button variant="ghost" class="w-full justify-start">Пример</Button>
+        {#each notes as note}
+          <Button
+            variant={note.id === activeNoteId ? 'secondary' : 'ghost'}
+            class="w-full justify-start"
+            on:click={() => (activeNoteId = note.id)}
+          >
+            {note.title}
+          </Button>
+        {/each}
       </nav>
     </div>
     <div class="border-t p-4">

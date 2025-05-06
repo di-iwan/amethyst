@@ -83,6 +83,26 @@
   function html(node: HTMLElement, html: string) {
     node.innerHTML = html;
   }
+  let renamingFolderId: number | null = null;
+
+function startRenaming(folderId: number) {
+  renamingFolderId = folderId;
+}
+
+function stopRenaming() {
+  renamingFolderId = null;
+}
+
+function deleteFolder(folderId: number) {
+  if (folders.length === 1) return; // не удаляем последнюю
+  folders = folders.filter(f => f.id !== folderId);
+
+  if (activeFolderId === folderId) {
+    const newActive = folders[0];
+    activeFolderId = newActive?.id ?? 0;
+    activeNoteId = newActive?.notes[0]?.id ?? 0;
+  }
+}
 </script>
 
 <div class="flex h-screen">
@@ -92,15 +112,36 @@
 
     <div class="flex-1 overflow-auto p-4 space-y-2">
       {#each folders as folder}
-        <div>
-          <!-- svelte-ignore a11y_click_events_have_key_events -->
-          <!-- svelte-ignore a11y_no_static_element_interactions -->
-          <div
-            class="font-semibold px-2 py-1 cursor-pointer hover:bg-muted rounded"
-            on:click={() => (activeFolderId = folder.id)}
-          >
-            {folder.name}
-          </div>
+  <div>
+    <div class="flex items-center justify-between px-2 py-1 hover:bg-muted rounded cursor-pointer group">
+      <!-- svelte-ignore a11y_click_events_have_key_events -->
+      <!-- svelte-ignore a11y_no_static_element_interactions -->
+      <div
+        class="font-semibold flex-1"
+        on:click={() => (activeFolderId = folder.id)}
+        on:dblclick={() => startRenaming(folder.id)}
+      >
+        {#if renamingFolderId === folder.id}
+          <!-- svelte-ignore a11y_autofocus -->
+          <input
+            bind:value={folder.name}
+            on:blur={stopRenaming}
+            on:keydown={(e) => e.key === 'Enter' && stopRenaming()}
+            class="w-full bg-transparent outline-none border-b border-muted-foreground"
+            autofocus
+          />
+        {:else}
+          {folder.name}
+        {/if}
+      </div>
+      <button
+        class="invisible group-hover:visible ml-2 text-muted-foreground hover:text-red-500"
+        on:click={() => deleteFolder(folder.id)}
+      >
+        <X class="size-4" />
+      </button>
+    </div>
+
           {#if folder.id === activeFolderId}
             <div class="ml-2 mt-1 space-y-1">
               {#each folder.notes as note}

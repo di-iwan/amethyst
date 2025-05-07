@@ -1,4 +1,13 @@
 <script lang="ts">
+  import ImportExportModal from '$lib/components/ImportExportModal.svelte';
+
+let isImportModalOpen = false;
+
+function handleImport(event: CustomEvent<{ content: string }>) {
+  activeNote.content = event.detail.content;
+  isImportModalOpen = false;
+}
+
   import { Textarea } from '$lib/components/ui/textarea';
   import { Button } from '$lib/components/ui/button';
   import { X, Plus, Menu } from 'lucide-svelte';
@@ -103,6 +112,26 @@ function deleteFolder(folderId: number) {
     activeNoteId = newActive?.notes[0]?.id ?? 0;
   }
 }
+function wrapSelection(before: string, after: string = before) {
+  const textarea = document.querySelector('textarea');
+  if (!textarea) return;
+
+  const start = textarea.selectionStart;
+  const end = textarea.selectionEnd;
+  const selected = activeNote.content.slice(start, end);
+
+  const newText = 
+    activeNote.content.slice(0, start) +
+    before + selected + after +
+    activeNote.content.slice(end);
+
+  activeNote.content = newText;
+
+  setTimeout(() => {
+    textarea.focus();
+    textarea.setSelectionRange(start + before.length, end + before.length);
+  });
+}
 </script>
 
 <div class="flex h-screen">
@@ -162,7 +191,9 @@ function deleteFolder(folderId: number) {
     <div class="border-b flex justify-center gap-2 py-2">
       <Button size="icon" variant="outline" on:click={addNoteToActiveFolder}><FilePlus /></Button>
       <Button size="icon" variant="outline" on:click={addFolder}><FolderPlus /></Button>
-      <Button size="icon" variant="outline"><HardDriveUpload /></Button>
+      <Button size="icon" variant="outline" on:click={() => (isImportModalOpen = true)}>
+        <HardDriveUpload />
+      </Button>      
       <ThemeSwitch />
     </div>
 
@@ -255,10 +286,11 @@ function deleteFolder(folderId: number) {
         <!-- Toolbar -->
         <div class="mb-4 flex justify-between flex-wrap items-center gap-2 border-b pb-2 text-muted-foreground text-sm">
           <div class="flex gap-2">
-            <button on:click={() => (activeNote.content += '**жирный**')} class="hover:text-foreground font-bold">B</button>
-            <button on:click={() => (activeNote.content += '_курсив_')} class="hover:text-foreground italic">I</button>
-            <button on:click={() => (activeNote.content += '# Заголовок\n')} class="hover:text-foreground">H1</button>
-            <button on:click={() => (activeNote.content += '\n- ')} class="hover:text-foreground">•</button>
+            <button on:click={() => wrapSelection('**')} class="hover:text-foreground font-bold">B</button>
+            <button on:click={() => wrapSelection('_')} class="hover:text-foreground italic">I</button>
+            <button on:click={() => wrapSelection('# ', '')} class="hover:text-foreground">H1</button>
+            <button on:click={() => wrapSelection('\n- ', '')} class="hover:text-foreground">•</button>
+
           </div>
           <button on:click={() => (isPreviewMode = !isPreviewMode)} class="text-sm underline">
             {isPreviewMode ? 'Редактировать' : 'Предпросмотр'}
@@ -280,3 +312,12 @@ function deleteFolder(folderId: number) {
     </div>
   </main>
 </div>
+
+{#if isImportModalOpen}
+  <ImportExportModal
+    bind:open={isImportModalOpen}
+    noteContent={activeNote.content}
+    on:import={handleImport}
+    on:close={() => (isImportModalOpen = false)}
+  />
+{/if}

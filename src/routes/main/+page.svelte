@@ -1,5 +1,5 @@
 <script lang="ts">
-  import ImportExportModal from '$lib/components/ImportExportModal.svelte';
+  import ImportModal from '$lib/components/ImportModal.svelte';
 
 let isImportModalOpen = false;
 
@@ -9,7 +9,7 @@ function handleImport(event: CustomEvent<{ content: string }>) {
 }
 
   import { Textarea } from '$lib/components/ui/textarea';
-  import { Button } from '$lib/components/ui/button';
+  import { Button, buttonVariants } from '$lib/components/ui/button';
   import { X, Plus, Menu } from 'lucide-svelte';
   import ThemeSwitch from '$lib/components/navbar/theme-switch.svelte';
   import * as Sheet from '$lib/components/ui/sheet';
@@ -24,6 +24,7 @@ function handleImport(event: CustomEvent<{ content: string }>) {
     DropdownMenuSeparator
   } from '$lib/components/ui/dropdown-menu';
   import { Avatar, AvatarImage, AvatarFallback } from '$lib/components/ui/avatar';
+  import { Dialog, DialogContent, DialogTrigger } from "$lib/components/ui/dialog";
 
   let isSheetOpen = false;
   let isPreviewMode = false;
@@ -191,9 +192,16 @@ function wrapSelection(before: string, after: string = before) {
     <div class="border-b flex justify-center gap-2 py-2">
       <Button size="icon" variant="outline" on:click={addNoteToActiveFolder}><FilePlus /></Button>
       <Button size="icon" variant="outline" on:click={addFolder}><FolderPlus /></Button>
-      <Button size="icon" variant="outline" on:click={() => (isImportModalOpen = true)}>
-        <HardDriveUpload />
-      </Button>      
+      <Dialog>
+        <DialogTrigger class={buttonVariants({variant: "outline", size: "icon"})}>
+          <HardDriveUpload /> 
+        </DialogTrigger>
+        <DialogContent>
+          <ImportModal
+            on:import={handleImport}
+          />
+        </DialogContent>
+      </Dialog>
       <ThemeSwitch />
     </div>
 
@@ -312,12 +320,3 @@ function wrapSelection(before: string, after: string = before) {
     </div>
   </main>
 </div>
-
-{#if isImportModalOpen}
-  <ImportExportModal
-    bind:open={isImportModalOpen}
-    noteContent={activeNote.content}
-    on:import={handleImport}
-    on:close={() => (isImportModalOpen = false)}
-  />
-{/if}

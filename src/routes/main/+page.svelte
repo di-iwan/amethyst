@@ -128,21 +128,21 @@ function wrapSelection(before: string, after: string = before) {
 
   activeNote.content = newText;
 
-  setTimeout(() => {
+  setImmediate(() => {
     textarea.focus();
     textarea.setSelectionRange(start + before.length, end + before.length);
   });
 }
 </script>
 
-<div class="flex h-screen">
+<div class="flex h-screen overflow-hidden">
   <!-- Sidebar -->
   <aside class="inset-y fixed left-0 z-20 hidden h-full w-64 flex-col border-r bg-background md:flex">
     <div class="p-4 border-b text-center text-xl font-semibold tracking-tight">NoteForge</div>
 
-    <div class="flex-1 overflow-auto p-4 space-y-2">
+    <div class="flex-1 p-4 space-y-2">
       {#each folders as folder}
-  <div>
+    <div>
     <div class="flex items-center justify-between px-2 py-1 hover:bg-muted rounded cursor-pointer group">
       <!-- svelte-ignore a11y_click_events_have_key_events -->
       <!-- svelte-ignore a11y_no_static_element_interactions -->
@@ -210,24 +210,24 @@ function wrapSelection(before: string, after: string = before) {
         <DropdownMenuTrigger class="w-full">
           <div class="flex items-center gap-3 px-3 py-2 hover:bg-muted cursor-pointer">
             <Avatar class="h-8 w-8">
-              <AvatarImage src="" alt="@DI_Iwan" />
+              <AvatarImage src="" alt="@DI_Ivan" />
               <AvatarFallback>DI</AvatarFallback>
             </Avatar>
             <div class="flex flex-col text-left text-sm leading-tight">
-              <span class="font-medium text-foreground">DI_Iwan</span>
-              <span class="text-muted-foreground text-xs">iwan.lelikov@gmail.com</span>
+              <span class="font-medium text-foreground truncate">DI_Ivan</span>
+              <span class="text-muted-foreground text-xs truncate">ivan.lelikov123456789@gmail.com</span>
             </div>
           </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent class="w-56" side="right">
           <DropdownMenuLabel class="flex items-center gap-2 px-3 py-2">
             <Avatar class="h-8 w-8">
-              <AvatarImage src="" alt="@DI_Iwan" />
+              <AvatarImage src="" alt="@DI_Ivan" />
               <AvatarFallback>DI</AvatarFallback>
             </Avatar>
             <div class="flex flex-col text-sm">
-              <span class="font-medium">DI_Iwan</span>
-              <span class="text-muted-foreground text-xs">iwan.lelikov@gmail.com</span>
+              <span class="font-medium truncate">DI_Ivan</span>
+              <span class="text-muted-foreground text-xs truncate">ivan.lelikov123456789@gmail.com</span>
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
@@ -254,10 +254,10 @@ function wrapSelection(before: string, after: string = before) {
       </Button>
     </div>
 
-    <div class="overflow-auto p-4 sm:p-6">
+    <div class="p-4 sm:p-6">
       <div class="mx-auto max-w-4xl rounded-2xl border bg-background p-4 sm:p-6 shadow-md">
         <!-- Note Tabs -->
-        <div class="flex items-center border-b mb-4 overflow-x-auto whitespace-nowrap">
+        <div class="flex items-center border-b mb-4 whitespace-nowrap">
           {#each notes as note}
             <!-- svelte-ignore a11y_click_events_have_key_events -->
             <!-- svelte-ignore a11y_no_static_element_interactions -->

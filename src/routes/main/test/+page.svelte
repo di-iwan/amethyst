@@ -67,19 +67,25 @@
   })
 </script>
 
-<div class="grid md:grid-cols-[16rem_auto] h-dvh w-full overflow-hidden">
-  <LeftMenu class="hidden md:flex" />
-  <div class="flex relative h-full w-full flex-col justify-center items-center bg-muted text-foreground">
-    <Sheet open={isSheetOpen} onOpenChange={v => isSheetOpen = v}>
-      <SheetTrigger let:builder={builder} asChild>
-        <Button builders={[builder]} class="fixed left-2 top-2 md:hidden" variant="ghost" size="icon">
-          <Menu class="size-6" />
-        </Button>
-      </SheetTrigger>
-      <SheetContent side="left" class="w-64 p-0">
-        <LeftMenu />
-      </SheetContent>
-    </Sheet>
+<div class="grid sm:grid-cols-[16rem_auto] h-dvh w-full overflow-hidden">
+  <LeftMenu class="hidden sm:flex" />
+  <div class="flex relative h-full w-full flex-col justify-center items-center bg-muted text-foreground p-4 sm:p-6 max-sm:pt-16">
+    <div class="fixed flex left-0 top-0 sm:hidden z-10 w-full items-center bg-background py-1 px-2">
+      <Sheet open={isSheetOpen} onOpenChange={v => isSheetOpen = v}>
+        <SheetTrigger let:builder={builder} asChild>
+          <Button builders={[builder]} variant="ghost" size="icon">
+            <Menu class="size-6" />
+          </Button>
+        </SheetTrigger>
+        <SheetContent side="left" class="w-64 p-0">
+          <LeftMenu inSheet />
+        </SheetContent>
+      </Sheet>
+      <span class="w-full text-center text-xl font-semibold">
+        NoteForge
+      </span>
+      <div class="size-10"></div>
+    </div>
     <Editor />
   </div>
 </div>

@@ -17,10 +17,12 @@
   let className: string = "";
   export { className as class }
 
+  export let inSheet: boolean = false;
+
   let tree: Writable<(Note|Folder)[]> = getContext("editor:tree");
 </script>
 
-<aside class={cn("inset-y left-0 z-20 flex h-full w-64 flex-col border-r bg-background", className)}>
+<aside class={cn("inset-y left-0 z-20 flex h-dvh w-64 flex-col border-r bg-background", className)}>
   <div class="p-4 border-b text-center text-xl font-semibold tracking-tight">NoteForge </div>
   <div class="flex-1 p-4 space-y-2 w-full overflow-x-hidden overflow-y-auto">
     <TreeElements elements={$tree} />
@@ -39,7 +41,7 @@
           </div>
         </div>
       </DropdownMenuTrigger>
-      <DropdownMenuContent class="w-56" side="right">
+      <DropdownMenuContent class="w-56" side={inSheet ? "top" : "right"}>
         <DropdownMenuLabel class="flex items-center gap-2 px-3 py-2">
           <Avatar class="size-8">
             <AvatarImage src="" alt="@DI_Ivan" />

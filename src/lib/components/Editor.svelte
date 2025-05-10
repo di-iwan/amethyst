@@ -1,14 +1,23 @@
 <script lang="ts">
   import { Button } from '$lib/components/ui/button';
   import type { EditorData, Folder, Note } from "$lib/types";
-	import { X } from "lucide-svelte";
+	import { Eye, Save, SquarePen, X } from "lucide-svelte";
   import { getContext } from "svelte";
+	import { Input } from './ui/input';
+	import { Textarea } from './ui/textarea';
+	import { Separator } from './ui/separator';
+	import { marked } from 'marked';
 
   let { activeTab, tabs, activeFolder, activeNote }: EditorData = getContext("editor:data");
+
+  let isPreviewMode: boolean = false;
+  $: name = $activeTab?.name
+  $: content = ""
+  $: renderedMarkdown = marked(content ?? '');
 </script>
 
-<div class="relative m-4 sm:m-6 max-w-4xl rounded-2xl border bg-background p-4 sm:p-6 shadow-md">
-  <div class="flex items-center border-b mb-4 whitespace-nowrap overflow-hidden overflow-x-auto">
+<div class="relative flex flex-col max-w-6xl rounded-2xl border bg-background p-4 sm:p-6 shadow-md w-full overflow-hidden h-full">
+  <div class="flex items-center border-b mb-4 whitespace-nowrap overflow-hidden overflow-x-auto h-10">
     {#each $tabs as tab}
       <!-- svelte-ignore a11y_click_events_have_key_events -->
       <!-- svelte-ignore a11y_no_static_element_interactions -->
@@ -38,4 +47,37 @@
       </div>
     {/each}
   </div>
+  <div class="flex items-center w-full gap-2">
+    <Input
+      type="text"
+      class="border-none"
+      bind:value={name}
+      placeholder="Заголовок заметки..."
+      readonly={isPreviewMode}
+    />
+    {#if isPreviewMode}
+      <Button variant="ghost" size="icon" on:click={() => isPreviewMode = false}>
+        <SquarePen />
+      </Button>
+    {:else}
+      <Button variant="ghost" size="icon" on:click={() => isPreviewMode = true}>
+        <Eye />
+      </Button>
+    {/if}
+    <Button variant="ghost" size="icon">
+      <Save />
+    </Button>
+  </div>
+  <Separator class="my-2" />
+  {#if isPreviewMode}
+    <div class="prose font-mono prose-zinc max-w-none p-4 whitespace-pre-wrap break-all">
+      {@html renderedMarkdown}
+    </div>
+  {:else}
+    <Textarea
+    bind:value={content}
+    class="w-full h-full resize-none border-none bg-transparent font-mono text-base text-foreground outline-none placeholder:text-muted-foreground"
+    placeholder="Начните писать заметку..."
+  />
+  {/if}
 </div>

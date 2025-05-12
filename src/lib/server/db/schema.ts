@@ -1,18 +1,38 @@
-import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
+import {
+  sqliteTable,
+  text,
+  integer,
+  type AnySQLiteColumn,
+} from 'drizzle-orm/sqlite-core';
+import { relations } from 'drizzle-orm';
 
-export const user = sqliteTable('user', {
-	id: text('id').primaryKey(),
-	age: integer('age')
+export const users = sqliteTable('users', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  firstName: text('first_name').notNull(),
+  secondName: text('second_name').notNull(),
+  email: text('email').notNull(),
+  password: text('password').notNull(),
 });
 
-export const session = sqliteTable('session', {
-	id: text('id').primaryKey(),
-	userId: text('user_id')
-		.notNull()
-		.references(() => user.id),
-	expiresAt: integer('expires_at', { mode: 'timestamp' }).notNull()
+export type User = typeof users.$inferSelect;
+
+export const folders = sqliteTable('folders', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+
+  userId: integer('user_id').references(() => users.id, { onDelete: 'cascade' }),
+
+  name: text('name').notNull(),
+
+  parentId: integer('parent_id').references((): AnySQLiteColumn => folders.id),
 });
 
-export type Session = typeof session.$inferSelect;
+export const notes = sqliteTable('notes', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
 
-export type User = typeof user.$inferSelect;
+  userId: integer('user_id').references(() => users.id, { onDelete: 'cascade' }),
+
+  folderId: integer('folder_id').references(() => folders.id, { onDelete: 'cascade' }),
+
+  title: text('title').notNull(),
+  content: text('content').notNull(),
+});

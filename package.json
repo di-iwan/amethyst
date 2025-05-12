@@ -63,6 +63,7 @@
 		"amethyst": "file:",
 		"better-sqlite3": "^11.9.1",
 		"drizzle-orm": "^0.40.1",
+		"lucia": "^3.2.2",
 		"marked": "^15.0.8"
 	},
 	"pnpm": {

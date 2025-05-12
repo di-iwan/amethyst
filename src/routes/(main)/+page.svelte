@@ -53,7 +53,7 @@
             <b class="text-foreground/65 dark:text-foreground/80">кузница заметок</b> - это место, где идеи обретают форму
         </p>
         <div class="mt-5 grid grid-cols-2 px-9 justify-center gap-5">
-            <Button class="uppercase" href="/login">
+            <Button class="uppercase" href="/register">
                 Опробовать
             </Button>
             <Button class="uppercase" variant="outline" href="/#details">

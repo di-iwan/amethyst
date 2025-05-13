@@ -13,6 +13,11 @@
 	import { cn } from "$lib/utils";
 	import { getContext } from "svelte";
 	import type { Writable } from "svelte/store";
+	import ThemeSwitch from "./navbar/theme-switch.svelte";
+  import { FilePlus, FolderPlus, HardDriveUpload } from '@lucide/svelte';
+  import { Button, buttonVariants } from '$lib/components/ui/button';
+	import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
+	import ImportModal from "./ImportModal.svelte";
   
   let className: string = "";
   export { className as class }
@@ -20,14 +25,34 @@
   export let inSheet: boolean = false;
 
   let tree: Writable<(Note|Folder)[]> = getContext("editor:tree");
+
+
+	function handleImport(e: CustomEvent<any>): void {
+		throw new Error("Function not implemented.");
+	}
 </script>
 
 <aside class={cn("inset-y left-0 z-20 flex h-dvh w-64 flex-col border-r bg-background", className)}>
   <div class="p-4 border-b text-center text-xl font-semibold tracking-tight">NoteForge </div>
+  <div class="border-b flex justify-center gap-2 py-2 *:size-8">
+  <Button size="icon" variant="ghost"><FilePlus /></Button>
+  <Button size="icon" variant="ghost"><FolderPlus /></Button>
+  <Dialog>
+  <DialogTrigger class={buttonVariants({variant: "ghost", size: "icon"})}>
+    <HardDriveUpload /> 
+  </DialogTrigger>
+  <DialogContent>
+    <ImportModal
+      on:import={handleImport}
+    />
+  </DialogContent>
+</Dialog>
+  <ThemeSwitch variant="ghost" />
+  </div>
   <div class="flex-1 p-4 space-y-2 w-full overflow-x-hidden overflow-y-auto">
     <TreeElements elements={$tree} />
   </div>
-  <div class="border-t">
+    <div class="border-t">
     <DropdownMenu>
       <DropdownMenuTrigger class="w-full">
         <div class="flex items-center gap-3 px-3 py-2 hover:bg-muted cursor-pointer">
@@ -53,11 +78,10 @@
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>Upgrade to Pro</DropdownMenuItem>
-        <DropdownMenuItem>Account</DropdownMenuItem>
-        <DropdownMenuItem>Billing</DropdownMenuItem>
+        <DropdownMenuItem href="/">Главная страница</DropdownMenuItem>
+        <DropdownMenuItem href="">Обновить до Pro</DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem class="text-red-500">Log out</DropdownMenuItem>
+        <DropdownMenuItem class="text-red-500">Выйти</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   </div>

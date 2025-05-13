@@ -298,7 +298,6 @@ function wrapSelection(before: string, after: string = before) {
             <button on:click={() => wrapSelection('_')} class="hover:text-foreground italic">I</button>
             <button on:click={() => wrapSelection('# ', '')} class="hover:text-foreground">H1</button>
             <button on:click={() => wrapSelection('\n- ', '')} class="hover:text-foreground">•</button>
-
           </div>
           <button on:click={() => (isPreviewMode = !isPreviewMode)} class="text-sm underline">
             {isPreviewMode ? 'Редактировать' : 'Предпросмотр'}

@@ -3,13 +3,15 @@
     import Moon from "lucide-svelte/icons/moon";
     
     import { toggleMode } from "mode-watcher";
-    import { Button } from "$lib/components/ui/button/index.js";
+    import { Button, type Props } from "$lib/components/ui/button/index.js";
 
     let className: string = "";
     export { className as class }
+
+    export let variant: Props["variant"] = "outline"
 </script>
 
-<Button on:click={toggleMode} class={className} variant="outline" size="icon">
+<Button on:click={toggleMode} class={className} {variant} size="icon">
     <Sun
         class="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"
     />

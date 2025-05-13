@@ -6,39 +6,34 @@
   
     const features = [
         {
-            category: 'Marketing and Sales',
-            title: 'Collect and enrich leads your way',
+            title: 'Создавайте и редактируйте заметки',
             details:
-                'Take control over how and when to follow up with your leads. Store and reference leads in multiple tables and, from there, automatically send them personalized emails.',
-            tutorialLink: '#'
+                'Фиксируйте мысли, идеи и задачи в удобном текстовом редакторе.',
+            image: "/images/1.png"
         },
         {
-            category: 'Project Management',
-            title: 'Streamline your workflows effortlessly',
+            title: 'Организуйте их по папкам и темам',
             details:
-                'Organize tasks, deadlines, and team collaboration in one place. Use customizable boards to manage projects efficiently and automate routine updates.',
-            tutorialLink: '#'
+                'Создавайте собственную структуру — группируйте заметки по проектам, категориям или любому удобному для вас принципу.',
+            image: "/images/2.png"
         },
         {
-            category: 'Customer Support',
-            title: 'Deliver seamless customer experiences',
+            title: 'Предпросматривайте заметки перед публикацией',
             details:
-                'Track and resolve customer queries faster with an integrated ticketing system. Set priorities, automate follow-ups, and enhance satisfaction with personalized responses.',
-            tutorialLink: '#'
+                'Поддержка Markdown позволяет точно видеть итоговое оформление: заголовки, списки, ссылки и код — всё отображается так, как будет видно читателю.',
+            image: "/images/3.png"
         },
         {
-            category: 'Team Collaboration',
-            title: 'Stay connected with your team',
+            title: 'Работайте в интуитивно понятном интерфейсе',
             details:
-                'Simplify communication and align team efforts with shared boards and real-time updates. Enable transparent goal tracking and instant feedback for better results.',
-            tutorialLink: '#'
+                'Минимализм и логика — в основе NoteForge. Интерфейс не отвлекает, всё находится на своих местах, а необходимые функции доступны сразу.',
+            image: "/images/4.png"
         },
         {
-            category: 'Product Development',
-            title: 'Accelerate innovation with ease',
+            title: 'Импортируйте старые заметки',
             details:
-                'Bring your product ideas to life by managing prototypes, feedback, and iterations in one place. Collaborate with your team to refine features and release with confidence.',
-            tutorialLink: '#'
+                'Переносите записи из других приложений или систем. Сохраняйте контекст и информацию без потерь, чтобы продолжить работу именно с того места, где вы остановились.',
+            image: "/images/5.png"
         }
     ];
 </script>
@@ -143,25 +138,21 @@
 </section>
 <div class="container py-10">
     <h2 id="details" class="text-4xl md:text-5xl md:leading-[3.5rem] font-bold tracking-tight max-w-xl md:text-center md:mx-auto">
-        Boost Your Strategy with Smart Features
+        Инструменты для ваших мыслей, планов и идей.
     </h2>
     <div class="mt-8 md:mt-16 w-full mx-auto space-y-20">
         {#each features as feature, i}
             <div class="flex flex-col md:flex-row items-center gap-x-20 gap-y-6 {i % 2 !== 0 ? 'md:flex-row-reverse' : ''}">
-                <div class="w-full aspect-[6/4] bg-muted rounded-xl border border-border/50 basis-1/2"></div>
-                    <div class="basis-1/2 shrink-0">
-                    <span class="uppercase font-semibold text-sm text-muted-foreground">
-                        {feature.category}
-                    </span>
+                <div class="w-full aspect-[6/4] bg-muted rounded-xl border border-border/50 basis-1/2">
+                    <img class="size-full" src={feature.image} alt="Инструменты">
+                </div>
+                <div class="basis-1/2 shrink-0">
                     <h4 class="my-3 text-3xl font-semibold tracking-tight">
                         {feature.title}
                     </h4>
                     <p class="text-muted-foreground text-[17px]">
                         {feature.details}
                     </p>
-                    <Button class="mt-6 gap-2" href="/main">
-                        Learn More <ArrowRight />
-                    </Button>
                 </div>
             </div>
         {/each}

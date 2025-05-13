@@ -29,25 +29,39 @@
       elements: [
         {
           id: 2,
-          name: 'Общие',
-          elements: [{ id: 1, name: 'Заметка 1', isFolder: false }, { id: 2, name: 'Заметка 1', isFolder: false }],
+          name: 'ПГУТИ',
+          elements: [{ id: 1, name: '3 курс', isFolder: false }, { id: 2, name: '4 курс', isFolder: false }],
           isFolder: true
         },
         {
           id: 3,
-          name: 'Общие',
-          elements: [{ id: 3, name: 'Заметка 1', isFolder: false }, { id: 4, name: 'Заметка 1', isFolder: false }],
+          name: 'Работа',
+          elements: [{ id: 3, name: 'Проект', isFolder: false }, { id: 4, name: 'Реализация', isFolder: false }],
           isFolder: true
         },
-        { id: 5, name: 'Заметка 1', isFolder: false }, { id: 6, name: 'Заметка 1', isFolder: false }
+        { id: 5, name: 'Саморазвитие', isFolder: false }, { id: 6, name: 'Заметка', isFolder: false }
       ],
       isFolder: true
     },
-    { id: 7, name: 'Заметка 1', isFolder: false }, { id: 8, name: 'Заметка 1', isFolder: false },
-    {
-      id: 4,
-      name: 'Общие',
-      elements: [{ id: 1, name: 'Заметка 1', isFolder: false }, { id: 1, name: 'Заметка 1', isFolder: false }],
+    { id: 7, name: 'Заметка 1', isFolder: false }, { id: 8, name: 'Заметка 2', isFolder: false },
+        {
+      id: 1,
+      name: 'Дом',
+      elements: [
+        {
+          id: 2,
+          name: 'ПГУТИ',
+          elements: [{ id: 1, name: '3 курс', isFolder: false }, { id: 2, name: '4 курс', isFolder: false }],
+          isFolder: true
+        },
+        {
+          id: 3,
+          name: 'Работа',
+          elements: [{ id: 3, name: 'Проект', isFolder: false }, { id: 4, name: 'Реализация', isFolder: false }],
+          isFolder: true
+        },
+        { id: 5, name: 'Саморазвитие', isFolder: false }, { id: 6, name: 'Заметка', isFolder: false }
+      ],
       isFolder: true
     },
   ]);

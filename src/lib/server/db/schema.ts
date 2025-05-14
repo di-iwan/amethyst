@@ -16,6 +16,14 @@ export const users = sqliteTable('users', {
 
 export type User = typeof users.$inferSelect;
 
+export const sessions = sqliteTable("session", {
+	id: text("id").primaryKey(),
+	userId: integer("user_id").notNull().references(() => users.id),
+	expiresAt: integer("expires_at", { mode: "timestamp_ms" }).notNull()
+});
+
+export type Session = typeof sessions.$inferSelect;
+
 export const folders = sqliteTable('folders', {
   id: integer('id').primaryKey({ autoIncrement: true }),
 
@@ -25,6 +33,8 @@ export const folders = sqliteTable('folders', {
 
   parentId: integer('parent_id').references((): AnySQLiteColumn => folders.id),
 });
+
+export type Folder = typeof folders.$inferSelect;
 
 export const notes = sqliteTable('notes', {
   id: integer('id').primaryKey({ autoIncrement: true }),
@@ -36,3 +46,5 @@ export const notes = sqliteTable('notes', {
   title: text('title').notNull(),
   content: text('content').notNull(),
 });
+
+export type Note = typeof notes.$inferSelect;

@@ -13,9 +13,13 @@ export type Folder = {
   isFolder: true;
 };
 
+export type Tab = Note & {
+  folder: Folder|null;
+}
+
 export type EditorData = {
   activeFolder: Writable<Folder|null>;
-  activeNote: Writable<Note|null>;
-  tabs: Writable<Note[]>;
+  activeElement: Writable<Folder|Note|null>;
+  tabs: Writable<Tab[]>;
   activeTab: Writable<Note|null>;
 }

@@ -2,7 +2,7 @@
   import { Button } from '$lib/components/ui/button';
   import { Menu } from 'lucide-svelte';
   import { Sheet, SheetTrigger, SheetContent } from '$lib/components/ui/sheet';
-  import type { Folder, Note } from '$lib/types';
+  import type { Folder, Note, Tab } from '$lib/types';
 	import LeftMenu from '$lib/components/LeftMenu.svelte';
 	import { onMount, setContext } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
@@ -69,13 +69,13 @@
   setContext("editor:tree", tree)
 
   let activeFolder: Writable<Folder|null> = writable(null);
-  let activeNote: Writable<Note|null> = writable(null);
-  let tabs: Writable<Note[]> = writable([]);
+  let activeElement: Writable<Folder|Note|null> = writable(null);
+  let tabs: Writable<Tab[]> = writable([]);
   let activeTab: Writable<null> = writable(null);
 
   setContext("editor:data", {
     activeFolder,
-    activeNote,
+    activeElement,
     activeTab,
     tabs
   })

@@ -143,7 +143,7 @@
     <div class="mt-8 md:mt-16 w-full mx-auto space-y-20">
         {#each features as feature, i}
             <div class="flex flex-col md:flex-row items-center gap-x-20 gap-y-6 {i % 2 !== 0 ? 'md:flex-row-reverse' : ''}">
-                <div class="w-full aspect-[6/4] bg-muted rounded-xl border border-border/50 basis-1/2">
+                <div class="w-full aspect-[6/4] bg-muted rounded-xl border border-border/50 basis-1/2 overflow-hidden">
                     <img class="size-full" src={feature.image} alt="Инструменты">
                 </div>
                 <div class="basis-1/2 shrink-0">

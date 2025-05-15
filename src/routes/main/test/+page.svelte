@@ -1,105 +1,321 @@
 <script lang="ts">
-  import { Button } from '$lib/components/ui/button';
-  import { Menu } from 'lucide-svelte';
-  import { Sheet, SheetTrigger, SheetContent } from '$lib/components/ui/sheet';
-  import type { Folder, Note, Tab } from '$lib/types';
-	import LeftMenu from '$lib/components/LeftMenu.svelte';
-	import { onMount, setContext } from 'svelte';
-	import { writable, type Writable } from 'svelte/store';
-	import Editor from '$lib/components/Editor.svelte';
+  import ImportModal from '$lib/components/ImportModal.svelte';
+
+let isImportModalOpen = false;
+
+function handleImport(event: CustomEvent<{ content: string }>) {
+  activeNote.content = event.detail.content;
+  isImportModalOpen = false;
+}
+
+  import { Textarea } from '$lib/components/ui/textarea';
+  import { Button, buttonVariants } from '$lib/components/ui/button';
+  import { X, Plus, Menu } from 'lucide-svelte';
+  import ThemeSwitch from '$lib/components/navbar/theme-switch.svelte';
+  import * as Sheet from '$lib/components/ui/sheet';
+  import { marked } from 'marked';
+  import { FilePlus, FolderPlus, HardDriveUpload } from '@lucide/svelte';
+  import {
+    DropdownMenu,
+    DropdownMenuTrigger,
+    DropdownMenuContent,
+    DropdownMenuLabel,
+    DropdownMenuItem,
+    DropdownMenuSeparator
+  } from '$lib/components/ui/dropdown-menu';
+  import { Avatar, AvatarImage, AvatarFallback } from '$lib/components/ui/avatar';
+  import { Dialog, DialogContent, DialogTrigger } from "$lib/components/ui/dialog";
 
   let isSheetOpen = false;
+  let isPreviewMode = false;
 
-  function handleResize() {
-    let width = window.innerWidth;
+  type Note = {
+    id: number;
+    title: string;
+    content: string;
+  };
 
-    if (width > 768) isSheetOpen = false
-  }
+  type Folder = {
+    id: number;
+    name: string;
+    notes: Note[];
+  };
 
-  onMount(() => {
-    window.addEventListener('resize', handleResize);
-
-    return () => window.removeEventListener('resize', handleResize);
-  });
-
-  let tree: Writable<(Note|Folder)[]> = writable([
+  let folders: Folder[] = [
     {
       id: 1,
       name: 'Общие',
-      elements: [
-        {
-          id: 2,
-          name: 'ПГУТИ',
-          elements: [{ id: 1, name: '3 курс', isFolder: false }, { id: 2, name: '4 курс', isFolder: false }],
-          isFolder: true
-        },
-        {
-          id: 3,
-          name: 'Работа',
-          elements: [{ id: 3, name: 'Проект', isFolder: false }, { id: 4, name: 'Реализация', isFolder: false }],
-          isFolder: true
-        },
-        { id: 5, name: 'Саморазвитие', isFolder: false }, { id: 6, name: 'Заметка', isFolder: false }
-      ],
-      isFolder: true
-    },
-    { id: 7, name: 'Заметка 1', isFolder: false }, { id: 8, name: 'Заметка 2', isFolder: false },
-        {
-      id: 1,
-      name: 'Дом',
-      elements: [
-        {
-          id: 2,
-          name: 'ПГУТИ',
-          elements: [{ id: 1, name: '3 курс', isFolder: false }, { id: 2, name: '4 курс', isFolder: false }],
-          isFolder: true
-        },
-        {
-          id: 3,
-          name: 'Работа',
-          elements: [{ id: 3, name: 'Проект', isFolder: false }, { id: 4, name: 'Реализация', isFolder: false }],
-          isFolder: true
-        },
-        { id: 5, name: 'Саморазвитие', isFolder: false }, { id: 6, name: 'Заметка', isFolder: false }
-      ],
-      isFolder: true
-    },
-  ]);
+      notes: [{ id: 1, title: 'Заметка 1', content: '' }]
+    }
+  ];
+  let activeFolderId = 1;
+  let activeNoteId = 1;
 
-  setContext("editor:tree", tree)
+  $: activeFolder = folders.find(f => f.id === activeFolderId) || folders[0];
+  $: notes = activeFolder?.notes || [];
+  $: activeNote = notes.find(n => n.id === activeNoteId) || notes[0];
+  $: renderedMarkdown = marked(activeNote?.content ?? '');
 
-  let activeFolder: Writable<Folder|null> = writable(null);
-  let activeElement: Writable<Folder|Note|null> = writable(null);
-  let tabs: Writable<Tab[]> = writable([]);
-  let activeTab: Writable<null> = writable(null);
+  function addFolder() {
+    const newFolder: Folder = {
+      id: Date.now(),
+      name: `Папка ${folders.length + 1}`,
+      notes: []
+    };
+    folders = [...folders, newFolder];
+    activeFolderId = newFolder.id;
+  }
 
-  setContext("editor:data", {
-    activeFolder,
-    activeElement,
-    activeTab,
-    tabs
-  })
+  function addNoteToActiveFolder() {
+    const folder = folders.find(f => f.id === activeFolderId);
+    if (!folder) return;
+    const newNote: Note = {
+      id: Date.now(),
+      title: `Заметка ${folder.notes.length + 1}`,
+      content: ''
+    };
+    folder.notes = [...folder.notes, newNote];
+    folders = [...folders];
+    activeNoteId = newNote.id;
+  }
+
+  function closeNote(noteId: number) {
+    const folder = folders.find(f => f.id === activeFolderId);
+    if (!folder || folder.notes.length <= 1) return;
+
+    folder.notes = folder.notes.filter(n => n.id !== noteId);
+    if (activeNoteId === noteId) {
+      activeNoteId = folder.notes[0].id;
+    }
+    folders = [...folders];
+  }
+
+  function html(node: HTMLElement, html: string) {
+    node.innerHTML = html;
+  }
+  let renamingFolderId: number | null = null;
+
+function startRenaming(folderId: number) {
+  renamingFolderId = folderId;
+}
+
+function stopRenaming() {
+  renamingFolderId = null;
+}
+
+function deleteFolder(folderId: number) {
+  if (folders.length === 1) return; // не удаляем последнюю
+  folders = folders.filter(f => f.id !== folderId);
+
+  if (activeFolderId === folderId) {
+    const newActive = folders[0];
+    activeFolderId = newActive?.id ?? 0;
+    activeNoteId = newActive?.notes[0]?.id ?? 0;
+  }
+}
+function wrapSelection(before: string, after: string = before) {
+  const textarea = document.querySelector('textarea');
+  if (!textarea) return;
+
+  const start = textarea.selectionStart;
+  const end = textarea.selectionEnd;
+  const selected = activeNote.content.slice(start, end);
+
+  const newText = 
+    activeNote.content.slice(0, start) +
+    before + selected + after +
+    activeNote.content.slice(end);
+
+  activeNote.content = newText;
+
+  setImmediate(() => {
+    textarea.focus();
+    textarea.setSelectionRange(start + before.length, end + before.length);
+  });
+}
 </script>
 
-<div class="grid sm:grid-cols-[16rem_auto] h-dvh w-full overflow-hidden">
-  <LeftMenu class="hidden sm:flex" />
-  <div class="flex relative h-full w-full flex-col justify-center items-center bg-muted text-foreground p-4 sm:p-6 max-sm:pt-16">
-    <div class="fixed flex left-0 top-0 sm:hidden z-10 w-full items-center bg-background py-1 px-2">
-      <Sheet open={isSheetOpen} onOpenChange={v => isSheetOpen = v}>
-        <SheetTrigger let:builder={builder} asChild>
-          <Button builders={[builder]} variant="ghost" size="icon">
-            <Menu class="size-6" />
-          </Button>
-        </SheetTrigger>
-        <SheetContent side="left" class="w-64 p-0">
-          <LeftMenu inSheet />
-        </SheetContent>
-      </Sheet>
-      <span class="w-full text-center text-xl font-semibold">
-        NoteForge
-      </span>
-      <div class="size-10"></div>
+<div class="flex h-screen overflow-hidden">
+  <!-- Sidebar -->
+  <aside class="inset-y fixed left-0 z-20 hidden h-full w-64 flex-col border-r bg-background md:flex">
+    <div class="p-4 border-b text-center text-xl font-semibold tracking-tight">NoteForge</div>
+
+    <div class="flex-1 p-4 space-y-2">
+      {#each folders as folder}
+    <div>
+    <div class="flex items-center justify-between px-2 py-1 hover:bg-muted rounded cursor-pointer group">
+      <!-- svelte-ignore a11y_click_events_have_key_events -->
+      <!-- svelte-ignore a11y_no_static_element_interactions -->
+      <div
+        class="font-semibold flex-1"
+        on:click={() => (activeFolderId = folder.id)}
+        on:dblclick={() => startRenaming(folder.id)}
+      >
+        {#if renamingFolderId === folder.id}
+          <!-- svelte-ignore a11y_autofocus -->
+          <input
+            bind:value={folder.name}
+            on:blur={stopRenaming}
+            on:keydown={(e) => e.key === 'Enter' && stopRenaming()}
+            class="w-full bg-transparent outline-none border-b border-muted-foreground"
+            autofocus
+          />
+        {:else}
+          {folder.name}
+        {/if}
+      </div>
+      <button
+        class="invisible group-hover:visible ml-2 text-muted-foreground hover:text-red-500"
+        on:click={() => deleteFolder(folder.id)}
+      >
+        <X class="size-4" />
+      </button>
     </div>
-    <Editor />
-  </div>
+
+          {#if folder.id === activeFolderId}
+            <div class="ml-2 mt-1 space-y-1">
+              {#each folder.notes as note}
+                <Button
+                  variant={note.id === activeNoteId ? 'secondary' : 'ghost'}
+                  class="w-full justify-start text-left"
+                  on:click={() => (activeNoteId = note.id)}
+                >
+                  {note.title}
+                </Button>
+              {/each}
+            </div>
+          {/if}
+        </div>
+      {/each}
+    </div>
+
+    <div class="border-b flex justify-center gap-2 py-2">
+      <Button size="icon" variant="outline" on:click={addNoteToActiveFolder}><FilePlus /></Button>
+      <Button size="icon" variant="outline" on:click={addFolder}><FolderPlus /></Button>
+      <Dialog>
+        <DialogTrigger class={buttonVariants({variant: "outline", size: "icon"})}>
+          <HardDriveUpload /> 
+        </DialogTrigger>
+        <DialogContent>
+          <ImportModal
+            on:import={handleImport}
+          />
+        </DialogContent>
+      </Dialog>
+      <ThemeSwitch />
+    </div>
+
+    <div class="border-t">
+      <DropdownMenu>
+        <DropdownMenuTrigger class="w-full">
+          <div class="flex items-center gap-3 px-3 py-2 hover:bg-muted cursor-pointer">
+            <Avatar class="h-8 w-8">
+              <AvatarImage src="" alt="@DI_Ivan" />
+              <AvatarFallback>DI</AvatarFallback>
+            </Avatar>
+            <div class="flex flex-col text-left text-sm leading-tight">
+              <span class="font-medium text-foreground truncate">DI_Ivan</span>
+              <span class="text-muted-foreground text-xs truncate">ivan.lelikov123456789@gmail.com</span>
+            </div>
+          </div>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent class="w-56" side="right">
+          <DropdownMenuLabel class="flex items-center gap-2 px-3 py-2">
+            <Avatar class="h-8 w-8">
+              <AvatarImage src="" alt="@DI_Ivan" />
+              <AvatarFallback>DI</AvatarFallback>
+            </Avatar>
+            <div class="flex flex-col text-sm">
+              <span class="font-medium truncate">DI_Ivan</span>
+              <span class="text-muted-foreground text-xs truncate">ivan.lelikov123456789@gmail.com</span>
+            </div>
+          </DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem>Upgrade to Pro</DropdownMenuItem>
+          <DropdownMenuItem>Account</DropdownMenuItem>
+          <DropdownMenuItem>Billing</DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem class="text-red-500">Log out</DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
+  </aside>
+
+  <!-- Mobile Sheet Sidebar -->
+  <Sheet.Root open={isSheetOpen} onOpenChange={(val) => (isSheetOpen = val)}>
+    <Sheet.Content side="left" class="w-64 p-0"></Sheet.Content>
+  </Sheet.Root>
+
+  <!-- Main content -->
+  <main class="flex h-full w-full flex-col bg-muted text-foreground md:ml-64">
+    <div class="sticky top-0 z-10 p-4 border-b bg-background flex items-center justify-between">
+      <Button class="md:hidden" variant="ghost" size="icon" on:click={() => (isSheetOpen = true)}>
+        <Menu class="size-6" />
+      </Button>
+    </div>
+
+    <div class="p-4 sm:p-6">
+      <div class="mx-auto max-w-4xl rounded-2xl border bg-background p-4 sm:p-6 shadow-md">
+        <!-- Note Tabs -->
+        <div class="flex items-center border-b mb-4 whitespace-nowrap">
+          {#each notes as note}
+            <!-- svelte-ignore a11y_click_events_have_key_events -->
+            <!-- svelte-ignore a11y_no_static_element_interactions -->
+            <div
+              class="relative flex items-center px-3 py-2 text-sm cursor-pointer transition-colors"
+              class:border-b-2={note.id === activeNoteId}
+              class:border-foreground={note.id === activeNoteId}
+              on:click={() => (activeNoteId = note.id)}
+            >
+              <span class={note.id === activeNoteId ? 'text-foreground' : 'text-muted-foreground'}>
+                {note.title}
+              </span>
+              {#if notes.length > 1}
+                <button class="ml-2 text-muted-foreground hover:text-foreground" on:click={() => closeNote(note.id)}>
+                  <X class="size-4" />
+                </button>
+              {/if}
+            </div>
+          {/each}
+          <button class="ml-2 text-muted-foreground hover:text-foreground shrink-0" on:click={addNoteToActiveFolder}>
+            <Plus class="size-4" />
+          </button>
+        </div>
+
+        <!-- Note Title -->
+        <input
+          type="text"
+          bind:value={activeNote.title}
+          placeholder="Заголовок заметки..."
+          class="mb-4 w-full border-none bg-transparent text-xl sm:text-2xl font-bold text-foreground outline-none placeholder:text-muted-foreground"
+          readonly={isPreviewMode}
+        />
+
+        <!-- Toolbar -->
+        <div class="mb-4 flex justify-between flex-wrap items-center gap-2 border-b pb-2 text-muted-foreground text-sm">
+          <div class="flex gap-2">
+            <button on:click={() => wrapSelection('**')} class="hover:text-foreground font-bold">B</button>
+            <button on:click={() => wrapSelection('_')} class="hover:text-foreground italic">I</button>
+            <button on:click={() => wrapSelection('# ', '')} class="hover:text-foreground">H1</button>
+            <button on:click={() => wrapSelection('\n- ', '')} class="hover:text-foreground">•</button>
+          </div>
+          <button on:click={() => (isPreviewMode = !isPreviewMode)} class="text-sm underline">
+            {isPreviewMode ? 'Редактировать' : 'Предпросмотр'}
+          </button>
+        </div>
+
+        <!-- Note Content -->
+        {#if isPreviewMode}
+          <div class="prose prose-invert max-w-none" use:html={renderedMarkdown as string}></div>
+        {:else}
+          <Textarea
+            bind:value={activeNote.content}
+            class="h-[60vh] w-full resize-none border-none bg-transparent font-mono text-base text-foreground outline-none placeholder:text-muted-foreground"
+            placeholder="Начните писать заметку..."
+            rows={20}
+          />
+        {/if}
+      </div>
+    </div>
+  </main>
 </div>

@@ -1,8 +1,11 @@
 import type { PageServerLoad } from "./$types.js";
 import { superValidate } from "sveltekit-superforms";
-import { fail, type Actions } from "@sveltejs/kit";
+import { fail, redirect, text, type Actions } from "@sveltejs/kit";
 import { formSchema } from "./schema";
 import { zod } from "sveltekit-superforms/adapters";
+import { db } from "$lib/server/db/index.js";
+import { users } from "$lib/server/db/schema.js";
+import bcrypt from "bcrypt";
  
 export const load: PageServerLoad = async () => {
   return {
@@ -18,10 +21,20 @@ export const actions: Actions = {
         form,
       });
     }
-    console.debug(form)
-    console.log()
-    return {
-      form,
-    };
+    
+    const { email, password, firstName, lastName } = form.data;
+
+    let user = await db.insert(users).values({
+      email,
+      password: await bcrypt.hash(password, 10),
+      firstName,
+      secondName: lastName,
+    }).run();
+    
+    if (user.changes !== 1) {
+      throw text("Something went wrong", { status: 500 });
+    }
+
+    throw redirect(302, "/login");
   },
 };

@@ -3,12 +3,8 @@
     import * as Card from "$lib/components/ui/card/index.js";
 	import { FormControl, FormField, FormFieldErrors, FormLabel } from "$lib/components/ui/form";
     import { Input } from "$lib/components/ui/input/index.js";
-    import { Label } from "$lib/components/ui/label/index.js";
-    import { z } from "zod";
-    import { formSchema, type FormSchema } from "./schema";
+    import { formSchema } from "./schema";
     import {
-        type SuperValidated,
-        type Infer,
         superForm,
     } from "sveltekit-superforms";
     import { zodClient } from "sveltekit-superforms/adapters";

@@ -10,7 +10,7 @@ export const users = sqliteTable('users', {
   id: integer('id').primaryKey({ autoIncrement: true }),
   firstName: text('first_name').notNull(),
   secondName: text('second_name').notNull(),
-  email: text('email').notNull(),
+  email: text('email').notNull().unique(),
   password: text('password').notNull(),
 });
 

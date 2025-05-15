@@ -6,6 +6,7 @@
 	import { buttonVariants } from "./ui/button";
 	import { getContext } from "svelte";
 	import { cn } from "$lib/utils";
+	import { writable, type Writable } from "svelte/store";
   
   export let elements: (Note|Folder)[];
   export let parent: Folder|null = null;

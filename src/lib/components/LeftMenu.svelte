@@ -20,6 +20,7 @@
 	import ImportModal from "./ImportModal.svelte";
 	import { type PageData } from "../../routes/main/$types";
 	import Logo from "./images/logo.svelte";
+	import { goto } from "$app/navigation";
   
   let className: string = "";
   export { className as class }
@@ -77,10 +78,10 @@
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem href="/">Главная страница</DropdownMenuItem>
-          <DropdownMenuItem href="">Обновить до Pro</DropdownMenuItem>
+          <DropdownMenuItem href="/pricing">Обновить до Pro</DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
-            on:click={() => fetch("?/logout", { method: "POST" })}
+            on:click={() => fetch("/api/auth/logout", { method: "POST" }).then(r => r.ok ? goto("/") : null)}
             class="text-red-500"
           >
             Выйти

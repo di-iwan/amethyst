@@ -44,7 +44,7 @@
                 <FormField {form} name="email">
                     <FormControl let:attrs>
                         <FormLabel>Электронная почта</FormLabel>
-                        <Input {...attrs} placeholder="m@example.com" bind:value={$formData.email} />
+                        <Input {...attrs} placeholder="ПГУТИ@yandex.ru" bind:value={$formData.email} />
                     </FormControl>
                     <FormFieldErrors />
                 </FormField>

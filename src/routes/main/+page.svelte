@@ -26,49 +26,7 @@
     return () => window.removeEventListener('resize', handleResize);
   });
 
-  let tree: Writable<(Note|Folder)[]> = writable([
-    {
-      id: 1,
-      name: 'Общие',
-      elements: [
-        {
-          id: 2,
-          name: 'ПГУТИ',
-          elements: [{ id: 1, name: '3 курс', isFolder: false }, { id: 2, name: '4 курс', isFolder: false }],
-          isFolder: true
-        },
-        {
-          id: 3,
-          name: 'Работа',
-          elements: [{ id: 3, name: 'Проект', isFolder: false }, { id: 4, name: 'Реализация', isFolder: false }],
-          isFolder: true
-        },
-        { id: 5, name: 'Саморазвитие', isFolder: false }, { id: 6, name: 'Заметка', isFolder: false }
-      ],
-      isFolder: true
-    },
-    { id: 7, name: 'Заметка 1', isFolder: false }, { id: 8, name: 'Заметка 2', isFolder: false },
-        {
-      id: 19,
-      name: 'Дом',
-      elements: [
-        {
-          id: 2,
-          name: 'ПГУТИ',
-          elements: [{ id: 1, name: '3 курс', isFolder: false }, { id: 2, name: '4 курс', isFolder: false }],
-          isFolder: true
-        },
-        {
-          id: 3,
-          name: 'Работа',
-          elements: [{ id: 3, name: 'Проект', isFolder: false }, { id: 4, name: 'Реализация', isFolder: false }],
-          isFolder: true
-        },
-        { id: 5, name: 'Саморазвитие', isFolder: false }, { id: 6, name: 'Заметка', isFolder: false }
-      ],
-      isFolder: true
-    },
-  ]);
+  let tree: Writable<(Note|Folder)[]> = writable(data.tree);
 
   setContext("editor:tree", tree)
 

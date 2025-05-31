@@ -6,6 +6,7 @@ import { db } from "$lib/server/db/index.js";
 import { users } from "$lib/server/db/schema.js";
 import bcrypt from "bcrypt";
 import * as auth from "$lib/server/auth.js";
+import { getUserTree } from "$lib/tree.js";
  
 export const load: PageServerLoad = async ({ locals }) => {
   const user = locals.user;
@@ -16,6 +17,7 @@ export const load: PageServerLoad = async ({ locals }) => {
   
   return {
     user,
+    tree: await getUserTree(user.id)
   };
 };
 

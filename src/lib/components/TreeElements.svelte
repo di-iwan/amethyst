@@ -23,7 +23,8 @@
           variant: "ghost",
           size: "sm"
         }), $activeElement?.isFolder && $activeElement.id === element.id && "bg-accent/60")}
-        onclick={() => {
+        on:click={e => {
+          e.stopPropagation();
           activeFolder.set(element);
           activeElement.set(element);
         }}
@@ -47,7 +48,8 @@
       )}
       variant="ghost"
       size="sm"
-      onclick={() => {
+      on:click={e => {
+        e.stopPropagation();
         activeFolder.set(parent);
         activeElement.set(element);
         tabs.update(notes => {

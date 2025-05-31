@@ -25,6 +25,7 @@ function handleImport(event: CustomEvent<{ content: string }>) {
   } from '$lib/components/ui/dropdown-menu';
   import { Avatar, AvatarImage, AvatarFallback } from '$lib/components/ui/avatar';
   import { Dialog, DialogContent, DialogTrigger } from "$lib/components/ui/dialog";
+  
 
   let isSheetOpen = false;
   let isPreviewMode = false;
@@ -190,11 +191,11 @@ function wrapSelection(before: string, after: string = before) {
     </div>
 
     <div class="border-b flex justify-center gap-2 py-2">
-      <Button size="icon" variant="outline" on:click={addNoteToActiveFolder}><FilePlus /></Button>
-      <Button size="icon" variant="outline" on:click={addFolder}><FolderPlus /></Button>
+      <Button size="icon" variant="outline" on:click={addNoteToActiveFolder}><Plus /></Button>
+      <Button size="icon" variant="outline" on:click={addFolder}><Plus /></Button>
       <Dialog>
         <DialogTrigger class={buttonVariants({variant: "outline", size: "icon"})}>
-          <HardDriveUpload /> 
+          <Plus /> 
         </DialogTrigger>
         <DialogContent>
           <ImportModal
@@ -202,7 +203,7 @@ function wrapSelection(before: string, after: string = before) {
           />
         </DialogContent>
       </Dialog>
-      <ThemeSwitch />
+      <Button size="icon" variant="outline" on:click={addFolder}><Plus /></Button>
     </div>
 
     <div class="border-t">
@@ -210,24 +211,24 @@ function wrapSelection(before: string, after: string = before) {
         <DropdownMenuTrigger class="w-full">
           <div class="flex items-center gap-3 px-3 py-2 hover:bg-muted cursor-pointer">
             <Avatar class="h-8 w-8">
-              <AvatarImage src="" alt="@DI_Ivan" />
-              <AvatarFallback>DI</AvatarFallback>
+              <AvatarImage src="" alt="@Ivan" />
+              <AvatarFallback>Iv</AvatarFallback>
             </Avatar>
             <div class="flex flex-col text-left text-sm leading-tight">
-              <span class="font-medium text-foreground truncate">DI_Ivan</span>
-              <span class="text-muted-foreground text-xs truncate">ivan.lelikov123456789@gmail.com</span>
+              <span class="font-medium text-foreground truncate">Ivan</span>
+              <span class="text-muted-foreground text-xs truncate">ivan@gmail.com</span>
             </div>
           </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent class="w-56" side="right">
           <DropdownMenuLabel class="flex items-center gap-2 px-3 py-2">
             <Avatar class="h-8 w-8">
-              <AvatarImage src="" alt="@DI_Ivan" />
+              <AvatarImage src="" alt="@Ivan" />
               <AvatarFallback>DI</AvatarFallback>
             </Avatar>
             <div class="flex flex-col text-sm">
-              <span class="font-medium truncate">DI_Ivan</span>
-              <span class="text-muted-foreground text-xs truncate">ivan.lelikov123456789@gmail.com</span>
+              <span class="font-medium truncate">Ivan</span>
+              <span class="text-muted-foreground text-xs truncate">ivan@gmail.com</span>
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />

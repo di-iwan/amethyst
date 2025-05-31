@@ -4,7 +4,7 @@
   import * as Card from '$lib/components/ui/card';
   import { Input } from '$lib/components/ui/input';
   import { Label } from '$lib/components/ui/label';
-	import { DialogClose, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from './ui/dialog';
+	import { DialogClose, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '../ui/dialog';
 	import { cn } from '$lib/utils';
 
   const dispatch = createEventDispatcher();

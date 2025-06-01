@@ -29,6 +29,13 @@
       "when": 1747327394211,
       "tag": "0003_supreme_ben_grimm",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1748803425857,
+      "tag": "0004_silent_stryfe",
+      "breakpoints": true
     }
   ]
 }

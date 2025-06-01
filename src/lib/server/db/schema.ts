@@ -31,7 +31,7 @@ export const folders = sqliteTable('folders', {
 
   name: text('name').notNull(),
 
-  parentId: integer('parent_id').references((): AnySQLiteColumn => folders.id),
+  parentId: integer('parent_id').references((): AnySQLiteColumn => folders.id, { onDelete: 'cascade' }),
 });
 
 export type Folder = typeof folders.$inferSelect;

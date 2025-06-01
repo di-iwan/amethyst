@@ -44,7 +44,7 @@
     <Button
       class={cn(
         "flex justify-start gap-2 pl-6 py-1 cursor-default w-full my-1",
-        $activeElement?.id === element.id && "bg-accent/60"
+        !$activeElement?.isFolder && $activeElement?.id === element.id && "bg-accent/60"
       )}
       variant="ghost"
       size="sm"

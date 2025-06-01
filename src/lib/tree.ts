@@ -1,5 +1,5 @@
 import { db } from '$lib/server/db';
-import { asc, eq } from 'drizzle-orm';
+import { asc, eq, inArray } from 'drizzle-orm';
 import { folders, notes, type Folder, type Note } from './server/db/schema';
 import type { Folder as TreeFolder, Note as TreeNote } from './types';
 

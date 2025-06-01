@@ -53,20 +53,24 @@ export const DELETE: RequestHandler = async ({ request, locals }) => {
     throw error(401, 'Unauthorized');
   }
 
-  const userNotes = await db
+  const { id } = await request.json();
+
+  const [deletedNote] = await db
     .delete(notes)
-    .where(eq(notes.userId, locals.user.id))
+    .where(and(eq(notes.id, id), eq(notes.userId, locals.user.id)))
     .returning();
 
-  return json(userNotes);
+  return json(deletedNote);
 }
 
-export const GET: RequestHandler = async ({ locals }) => {
+export const GET: RequestHandler = async ({ locals, url }) => {
   if (!locals.user) {
     throw error(401, 'Unauthorized');
   }
 
-  const userNotes = await db
+  const id = Number(url.searchParams.get('id'));
+
+  const [userNote] = await db
     .select({
       id: notes.id,
       title: notes.title,
@@ -74,7 +78,7 @@ export const GET: RequestHandler = async ({ locals }) => {
       folderId: notes.folderId
     })
     .from(notes)
-    .where(eq(notes.userId, locals.user.id));
+    .where(and(eq(notes.id, id), eq(notes.userId, locals.user.id)));
 
-  return json(userNotes);
+  return json(userNote);
 };

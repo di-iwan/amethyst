@@ -11,7 +11,7 @@
     DropdownMenuSeparator
   } from '$lib/components/ui/dropdown-menu';
 	import { cn } from "$lib/utils";
-	import { getContext } from "svelte";
+	import { getContext, onMount } from "svelte";
 	import type { Writable } from "svelte/store";
 	import ThemeSwitch from "./navbar/theme-switch.svelte";
   import { FilePlus, FolderPlus, HardDriveUpload, TextCursorInput, Trash2 } from '@lucide/svelte';
@@ -47,6 +47,31 @@
 	function handleImport(e: CustomEvent<any>): void {
 		throw new Error("Function not implemented.");
 	}
+
+  onMount(() => {
+    if (inSheet) return;
+
+    function handleKeydown(e: KeyboardEvent): void {
+      if (
+        newFolderModalOpen ||
+        newNoteModalOpen ||
+        renameModalOpen ||
+        removeModalOpen ||
+        !$activeElement
+      ) return;
+      if (e.code === 'F2') {
+        renameModalOpen = true
+      } else if (e.code === 'Delete') {
+        removeModalOpen = true
+      }
+    }
+
+    document.body.addEventListener('keydown', handleKeydown)
+
+    return () => {
+      document.body.removeEventListener('keydown', handleKeydown)
+    }
+  })
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->

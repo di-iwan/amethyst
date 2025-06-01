@@ -30,7 +30,7 @@
   <DialogClose
     class={cn(buttonVariants(), "w-full")}
     on:click={async () => {
-      const res = await addFile(file, $activeFolder);
+      const res = await addFile(file, $activeElement?.isFolder ? $activeElement : $activeFolder);
       
       tree.set(await getTree());
       activeElement.set({

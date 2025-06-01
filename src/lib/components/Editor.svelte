@@ -7,13 +7,32 @@
 	import { Textarea } from './ui/textarea';
 	import { Separator } from './ui/separator';
 	import { marked } from 'marked';
+	import { changeNote, getNote, getTree, hasElement } from '$lib/tree.client';
+	import type { Writable } from 'svelte/store';
 
   let { activeTab, tabs, activeElement, activeFolder }: EditorData = getContext("editor:data");
+  let tree: Writable<(Note|Folder)[]> = getContext("editor:tree");
 
   let isPreviewMode: boolean = false;
-  $: name = $activeTab?.name
+  $: name = $activeTab?.name ?? '';
   $: content = ""
   $: renderedMarkdown = marked(content ?? '');
+
+  activeTab.subscribe((tab) => {
+    if (!tab) return
+    getNote(tab?.id).then((note) => {
+      name = note.title
+      content = note.content
+    })
+  })
+
+  async function handleSave() {
+    if (!$activeTab) return
+    await changeNote($activeTab?.id, name, content)
+    tree.set(await getTree());
+    tabs.update(v => v.filter(t => hasElement($tree, t)));
+    activeTab.update(v => $tabs.find(t => t.id === v?.id) ?? $tabs[0] ?? null);
+  }
 </script>
 
 {#if !$activeTab}
@@ -21,7 +40,7 @@
     <span class="text-foreground text-xl text-center md:text-4xl">Перед началом откройте или создайте заметку.</span>
   </div>
 {:else}
-  <div class="relative flex flex-col max-w-6xl rounded-2xl border bg-background p-4 sm:p-6 shadow-md w-full overflow-hidden h-full">
+  <div class="relative flex flex-col max-w-6xl rounded-2xl border bg-background p-4 sm:p-6 shadow-md w-full min-w-0 overflow-hidden h-full">
     <div class="flex items-center border-b mb-4 whitespace-nowrap overflow-hidden overflow-x-auto h-12">
       {#each $tabs as tab}
         <!-- svelte-ignore a11y_click_events_have_key_events -->
@@ -77,7 +96,7 @@
           <Eye />
         </Button>
       {/if}
-      <Button variant="ghost" size="icon">
+      <Button variant="ghost" size="icon" on:click={handleSave}>
         <Save />
       </Button>
     </div>

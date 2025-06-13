@@ -102,8 +102,10 @@
     </div>
     <Separator class="my-2" />
     {#if isPreviewMode}
-      <div class="prose font-mono prose-zinc max-w-none p-4 whitespace-pre-wrap break-all">
-        {@html renderedMarkdown}
+      <div class="max-w-full w-full h-full p-4 max-md:p-0 whitespace-pre-wrap break-all overflow-auto">
+        <div class="prose font-mono prose-zinc max-w-full w-full h-full">
+          {@html renderedMarkdown}
+        </div>
       </div>
     {:else}
       <Textarea

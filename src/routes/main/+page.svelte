@@ -45,7 +45,7 @@
 
 <div class="grid sm:grid-cols-[16rem_auto] h-dvh w-full overflow-hidden">
   <LeftMenu class="hidden sm:flex" />
-  <div class="flex relative h-full w-full flex-col justify-center items-center bg-muted text-foreground p-4 sm:p-6 max-sm:pt-16">
+  <div class="flex relative h-full min-h-0 w-full min-w-0 flex-col justify-center items-center bg-muted text-foreground p-4 sm:p-6 max-sm:pt-16">
     <div class="fixed flex left-0 top-0 sm:hidden z-10 w-full items-center bg-background py-1 px-2">
       <Sheet open={isSheetOpen} onOpenChange={v => isSheetOpen = v}>
         <SheetTrigger let:builder={builder} asChild>

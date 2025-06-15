@@ -61,8 +61,6 @@
       ) return;
       if (e.code === 'F2') {
         renameModalOpen = true
-      } else if (e.code === 'Delete') {
-        removeModalOpen = true
       }
     }
 
